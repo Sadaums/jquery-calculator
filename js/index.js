@@ -5,8 +5,7 @@ $(document).ready(function() {
     var $screen = $('#screen');
     var displayText = $screen.text();
     var currentOperator = '';
-    // var currentTotal = 0;
-    var builderArray = [];
+    var builderArray = [0];
 
 
     $('.buttons').on('click', function() {
@@ -16,8 +15,7 @@ $(document).ready(function() {
         if (input === 'C') {
             displayText = '';
             $screen.text('');
-            // var currentTotal = 0;
-            builderArray = [];
+            builderArray = [0];
             console.log(builderArray);
             return builderArray;
         }
@@ -35,33 +33,55 @@ $(document).ready(function() {
             var editedArray = [];
             for (var i = 0; i < builderArray.length; i++) {
                 if (builderArray[i].length > 1) {
-                    // push number into final arrray without opperator, and as NOT a string
                     editedArray.push(parseInt(builderArray[i], 10))
+                    i++;
+                }
+                if (builderArray[0] === builderArray[1]) {
+                    editedArray.push(builderArray[0]);
+                    i++;
                 } else {
                     editedArray.push(builderArray[i]);
                 }
             }
-            var total = 0
-            for (var i = 0; i < editedArray.length; i++) {
-              if
-            }
-            displayText = editedArray;
-            $screen.text(editedArray);
             console.log(editedArray);
-            builderArray = editedArray;
+            var total = 0;
+            for (var i = 0; i < editedArray.length; i++) {
+                if (typeof editedArray[i] === 'number' && typeof editedArray[i + 1] === 'number') {
+                    total = editedArray[i + 1];
+                    i++;
+                    i++;
+                }
+                if (editedArray[i] === '-' && editedArray[i + 1] === '-') {
+                    total -= editedArray[i + 2];
+                    i++;
+                    i++;
+                    i++;
+                }
+                if (typeof editedArray[i] === 'number') {
+                    total += editedArray[i];
+                } else if (editedArray[i] === '-') {
+                    total -= editedArray[i + 1];
+                    i++;
+                } else if (editedArray[i] === '+') {
+                    total += editedArray[i + 1];
+                    i++;
+                } else if (editedArray[i] === 'x') {
+                    total *= editedArray[i + 1];
+                    i++;
+                } else if (editedArray[i] === '÷') {
+                    total /= editedArray[i + 1];
+                    i++;
+                } else {
+                    i++;
+                }
+            }
+            if (isNaN(total)) {
+                total = "ERROR!"
+            }
+            displayText = total;
+            $screen.text(total);
+            console.log(total);
+            builderArray = [total];
         }
-        //   if (input === '-') {
-        //     currentTotal -= displayText;
-        //   }
-        //   if (input === '+') {
-        //     currentTotal += displayText;
-        //   }
-        //   if (input === 'x') {
-        //     currentTotal *= displayText;
-        //   }
-        //   if (input === '÷') {
-        //     currentTotal /= displayText;
-        //   }
-        // }
     })
 })
